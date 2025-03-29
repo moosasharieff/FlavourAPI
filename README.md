@@ -21,8 +21,8 @@ Ensure you have the following installed on your local machine:
     Start by creating a new directory on your local machine for your project. Then, initialize the directory as a Git repository:
 
     ```bash
-    mkdir <your_project_name>
-    cd <your_project_name>
+    mkdir <your_project_name> &&
+    cd <your_project_name> &&
     git init
     ```
 
@@ -34,7 +34,6 @@ Ensure you have the following installed on your local machine:
 
     ```bash
     git remote add template https://github.com/moosasharieff/DjangoRESTTemplate.git
-    git fetch template
     ```
 
     This will allow you to fetch the latest changes from the DjangoRESTTemplate repository.
@@ -44,7 +43,7 @@ Ensure you have the following installed on your local machine:
     To incorporate the latest changes from the main branch of the template repository, use the following commands:
 
     ```bash
-    git fetch template
+    git fetch template &&
     git merge template/main
     ```
 
