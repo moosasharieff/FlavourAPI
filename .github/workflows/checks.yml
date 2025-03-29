@@ -1,4 +1,3 @@
-
 name: Checks Code
 
 on:
@@ -20,7 +19,15 @@ jobs:
 
       - name: Checkout Git
         uses: actions/checkout@v2
+
+      - name: Set up Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose --version  # Verify that docker-compose is installed
+
       - name: Testing
         run: docker-compose run --rm app /bin/sh -c "python manage.py wait_for_db && python3 manage.py test"
+
       - name: Linting
         run: docker-compose run --rm app /bin/sh -c "flake8"
