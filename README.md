@@ -1,1 +1,1 @@
-# DjangoProject1
+# Django REST Template
