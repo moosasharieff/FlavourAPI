@@ -59,17 +59,18 @@ Ensure you have the following installed on your local machine:
 
     This will build the necessary Docker images for your project.
 
-5.  **Start the Containers**
+5. **Run Django Tests**
 
-    To start the Docker containers defined in `docker-compose.yml`, use the following command:
+    To run the tests for your Django app inside the container, use:
 
     ```bash
-    docker-compose up
+    docker-compose run --rm app /bin/sh -c "python manage.py test"
     ```
 
-    This will start the web service (Django app) and any other services (like a database) defined in the `docker-compose.yml` file.
+    This will execute your Django test suite.
 
-6.  **Create a Django Superuser**
+
+6. **Create a Django Superuser**
 
     To create a superuser for accessing the Django admin panel, run the following command:
 
@@ -79,15 +80,17 @@ Ensure you have the following installed on your local machine:
 
     You will be prompted to enter a username, email, and password for the superuser.
 
-7.  **Run Django Tests**
 
-    To run the tests for your Django app inside the container, use:
+7. **Start the Containers**
+
+    To start the Docker containers defined in `docker-compose.yml`, use the following command:
 
     ```bash
-    docker-compose run --rm app /bin/sh -c "python manage.py test"
+    docker-compose up
     ```
 
-    This will execute your Django test suite.
+    This will start the web service (Django app) and any other services (like a database) defined in the `docker-compose.yml` file.
+
 
 8.  **Stop the Containers**
 
