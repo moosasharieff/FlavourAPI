@@ -11,6 +11,8 @@ Ensure you have the following installed on your local machine:
 
 - Docker
 - Docker Compose
+- GitHub Account
+- DockerHub Account
 
 ## Setup Instructions
 
@@ -110,9 +112,28 @@ Ensure you have the following installed on your local machine:
     docker-compose up
     ```
 
+10. **Configure GitHub Actions for DockerHub (Setup Secrets)**
+
+    -   **Create a DockerHub Access Token:**
+        -   Log in to your DockerHub account.
+        -   Go to `Account Settings` -> `Personal access tokens`.
+        -   Click `Generate new token`.
+        -   Give your token a descriptive name (e.g., "GitHub Actions").
+        -   Select the expirations date.
+        -   Choose relevant access.
+        -   Click `Generate`.
+        -   Copy the generated `username` and `token`. **This is crucial, as you won't be able to see it again.**
+    -   **Create DockerHub Secrets in GitHub:**
+        -   Go to your GitHub repository's `Settings` -> `Secrets and variables` -> `Actions` -> `Secrets` -> `Repository secrets`.
+        -   Add `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`. Paste the token you copied from DockerHub in relevant textboxes.
+        -   Click `Add secret`.
+    -   *Note: This step prepares your GitHub repository with the necessary secrets for DockerHub authentication. You will need to create a GitHub actions workflow to utilize these secrets to push to Dockerhub.*
+
 ## Troubleshooting
 
 If you run into issues, try the following:
 
 -   Ensure Docker and Docker Compose are installed and running.
 -   Check for any error messages in the logs when running `docker-compose up` or `docker-compose logs`.
+-   Verify that your DockerHub credentials in GitHub Secrets are correct.
+-   Ensure you copied the entire DockerHub token without any extra spaces.
