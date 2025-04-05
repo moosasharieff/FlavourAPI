@@ -10,6 +10,8 @@ from rest_framework import status
 
 CREATE_USER_URL = reverse('user:create')
 TOKEN_URL = reverse('user:token')
+ME_URL = reverse('user:me')
+
 
 def create_user(**params):
     """Creates users directly into the database"""
@@ -55,7 +57,7 @@ class PublicUserAPITestClass(TestCase):
         # Creating user directly into db
         create_user(**payload)
         # HTTP POST Request to create user
-        res = self.client.post(path=CREATE_USER_URL, data=payload)
+        res = self.client.post(CREATE_USER_URL, payload)
 
         # Assertions
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
@@ -141,3 +143,9 @@ class PublicUserAPITestClass(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertNotIn('token', response.data)
+
+    def test_retrieve_user_data_with_unauthorized_user(self):
+        """Test retrieving user data with unauthorized user."""
+        response = self.client.get(ME_URL)
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
