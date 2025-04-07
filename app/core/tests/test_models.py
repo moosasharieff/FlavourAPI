@@ -4,13 +4,14 @@
 Testing models.
 """
 
-from django.test import TestCase
 # Default user model for Auth
 from django.contrib.auth import get_user_model
+from django.test import TestCase
 
 
 class ModelTests(TestCase):
     """Test models."""
+
     def test_create_user_with_email_successful(self):
         """Test user with email instead of username is successful."""
 
@@ -18,10 +19,7 @@ class ModelTests(TestCase):
         password = "testPassword123"
 
         # Need to implement email functionality in get_user_model()
-        user = get_user_model().objects.create_user(
-            email=email,
-            password=password
-        )
+        user = get_user_model().objects.create_user(email=email, password=password)
 
         self.assertEqual(user.email, email)
         # We use user.check_password() as we use hashing to check password
@@ -39,8 +37,7 @@ class ModelTests(TestCase):
 
         # Test Cases
         for inc_email, exp_email in sample_email:
-            user = get_user_model().objects.create_user(inc_email,
-                                                        "samplePassword123")
+            user = get_user_model().objects.create_user(inc_email, "samplePassword123")
             self.assertEqual(user.email, exp_email)
 
     def test_raise_value_error_if_user_does_not_input_email(self):
@@ -51,8 +48,8 @@ class ModelTests(TestCase):
     def test_superuser_functionality(self):
         """Test creating a superuser for the user."""
         user = get_user_model().objects.create_superuser(
-            email='test@example.com',
-            password='Pass123',
+            email="test@example.com",
+            password="Pass123",
         )
 
         # Assertions
