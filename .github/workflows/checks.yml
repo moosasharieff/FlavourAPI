@@ -2,9 +2,7 @@ name: Checks Code
 
 on:
   push:
-    branches:
-      - main
-      - dev
+  pull_request:
 
 jobs:
   testing-and-linting:
@@ -24,10 +22,10 @@ jobs:
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose --version  # Verify that docker-compose is installed
+          docker-compose --version
 
-      - name: Testing
+      - name: Run Tests
         run: docker-compose run --rm app /bin/sh -c "python manage.py wait_for_db && python3 manage.py test"
 
-      - name: Linting
-        run: docker-compose run --rm app /bin/sh -c "flake8"
+      - name: Run Linters
+        run: docker-compose run --rm app /bin/sh -c "black --check ."
