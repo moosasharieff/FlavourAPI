@@ -145,6 +145,5 @@ AUTH_USER_MODEL = "core.User"
 
 # Letting Django know to use "drf_spectacular" configuration for Auto API Docs
 REST_FRAMEWORK = {
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    "DEFAULT_PERMISSION_CLASSES": "rest_framework.permissions.IsAuthenticated",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema"
 }
