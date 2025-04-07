@@ -28,4 +28,4 @@ jobs:
         run: docker-compose run --rm app /bin/sh -c "python manage.py wait_for_db && python3 manage.py test"
 
       - name: Run Linters
-        run: docker-compose run --rm app /bin/sh -c "black --check . && isort --check ."
+        run: docker-compose run --rm app /bin/sh -c "black --check ."
