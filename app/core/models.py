@@ -3,6 +3,7 @@
 Models for Django application
 """
 
+from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -52,3 +53,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Overriding in system to use `email` instead of
     # username when Authenticating.
     USERNAME_FIELD = "email"
+
+
+class Flavour(models.Model):
+    """Create Flavour DB in the system."""
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    time_minutes = models.IntegerField()
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    description = models.TextField(blank=True)
+    link = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        """Returns strings representation of the class."""
+        return self.title

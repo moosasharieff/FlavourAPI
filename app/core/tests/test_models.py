@@ -5,12 +5,32 @@ Testing models.
 """
 
 # Default user model for Auth
+from decimal import Decimal
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+
+from .. import models
 
 
 class ModelTests(TestCase):
     """Test models."""
+
+    @staticmethod
+    def create_user(**params):
+        """Create user inside Database.
+
+        Parameters:
+            **params: Arbitrary keyword arguments to include email and password.
+
+        Returns:
+            User instance created using Django's user model.
+        """
+        creds = {"email": "testing@testing.com", "password": "testing@123"}
+        creds.update(**params)
+        return get_user_model().objects.create_user(
+            email=creds["email"], password=creds["password"]
+        )
 
     def test_create_user_with_email_successful(self):
         """Test user with email instead of username is successful."""
@@ -55,3 +75,16 @@ class ModelTests(TestCase):
         # Assertions
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    def test_create_flavour_success(self):
+        """Test creating a flavour successfully in DB."""
+        user = ModelTests.create_user()
+        flavour = models.Flavour.objects.create(
+            user=user,
+            title="Sample flavour title",
+            time_minutes=5,
+            price=Decimal("5.50"),
+            description="This is sample description.",
+        )
+
+        self.assertEqual(str(flavour), flavour.title)
