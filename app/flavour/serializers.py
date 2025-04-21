@@ -5,10 +5,10 @@ Serializers for recipe APIs.
 
 from rest_framework import serializers
 
-from app.core.models import Flavour
+from core.models import Flavour
 
 
-class FlavourSerializer(serializers.ModelSerializers):
+class FlavourSerializer(serializers.ModelSerializer):
     """Serializer for Flavour API."""
 
     class Meta:
