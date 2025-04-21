@@ -57,6 +57,7 @@ class PublicFlavourAPITests(TestCase):
 
 class PrivateFlavourAPITests(TestCase):
     """Test cases of Flavour API for authorized user."""
+
     def setUp(self):
         """Setting up testing environrment."""
         self.user = create_user()
@@ -69,7 +70,7 @@ class PrivateFlavourAPITests(TestCase):
         create_flavour(user=self.user)
 
         response = self.client.get(FLAVOUR_URL)
-        flavour = Flavour.objects.all().order_by('-id')
+        flavour = Flavour.objects.all().order_by("-id")
         serializer = FlavourSerializer(flavour, many=True)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -78,8 +79,8 @@ class PrivateFlavourAPITests(TestCase):
     def test_retrive_flavour_for_user(self):
         """Test retrieving flavour for specific user."""
         other_user_creds = {
-            'email': 'otherTester@testing.com',
-            'password': 'testPassword'
+            "email": "otherTester@testing.com",
+            "password": "testPassword",
         }
 
         other_user = create_user(**other_user_creds)
@@ -96,4 +97,3 @@ class PrivateFlavourAPITests(TestCase):
         self.assertEqual(response.data, serializer.data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-

@@ -12,6 +12,7 @@ from .serializers import FlavourSerializer
 
 class FlavourViewSet(viewsets.ModelViewSet):
     """View for managing Flavour API."""
+
     serializer_class = FlavourSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -20,4 +21,4 @@ class FlavourViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Return flavour query only for authenticated user."""
-        return self.queryset.filter(user=self.request.user).order_by('-id')
+        return self.queryset.filter(user=self.request.user).order_by("-id")
