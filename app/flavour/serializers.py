@@ -13,5 +13,14 @@ class FlavourSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Flavour
-        fields = ["id", "title", "description", "price", "time_minutes", "link"]
-        ready_only_fields = ["id"]
+        fields = ["id", "title", "price", "time_minutes", "link"]
+        read_only_fields = ["id"]
+
+
+class FlavourDetailSerializer(FlavourSerializer):
+    """Serializes single flavour details."""
+
+    class Meta(FlavourSerializer.Meta):
+        """Inherite attributes from 'cls: FlavourSerializer' to build this class."""
+
+        fields = FlavourSerializer.Meta.fields + ["description"]
