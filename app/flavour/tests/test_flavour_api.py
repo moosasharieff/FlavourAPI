@@ -14,7 +14,7 @@ from core.models import Flavour
 
 from ..serializers import FlavourSerializer
 
-FLAVOUR_URL = "flavour:flavour-list"
+FLAVOUR_URL = reverse("flavour:flavour-list")
 
 
 def create_user(**params):
