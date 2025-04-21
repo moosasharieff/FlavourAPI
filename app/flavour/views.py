@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from core.models import Flavour
 
-from .serializers import FlavourSerializer
+from .serializers import FlavourDetailSerializer, FlavourSerializer
 
 
 class FlavourViewSet(viewsets.ModelViewSet):
@@ -22,3 +22,9 @@ class FlavourViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """Return flavour query only for authenticated user."""
         return self.queryset.filter(user=self.request.user).order_by("-id")
+
+    def get_serializer_class(self):
+        """Overrides the above 'serializer_class' and returns serializer class depending on list or detail request."""
+        if self.action == "list":
+            return FlavourSerializer
+        return FlavourDetailSerializer
