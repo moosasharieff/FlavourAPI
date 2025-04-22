@@ -93,6 +93,6 @@ class ModelTests(TestCase):
         """Test creating tag directly in DB."""
         user = ModelTests.create_user()
 
-        tag = models.Tag.objects.create(user=user, name='TestTag1')
+        tag = models.Tag.objects.create(user=user, name="TestTag1")
 
         self.assertEqual(str(tag), tag.name)
