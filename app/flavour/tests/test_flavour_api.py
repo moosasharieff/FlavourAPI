@@ -12,9 +12,14 @@ from rest_framework.test import APIClient
 
 from core.models import Flavour
 
-from ..serializers import FlavourSerializer
+from ..serializers import FlavourDetailSerializer, FlavourSerializer
 
 FLAVOUR_URL = reverse("flavour:flavour-list")
+
+
+def flavour_detail_url(flavour_id):
+    """Returns custom flavour URL."""
+    return reverse("flavour:flavour-detail", args=[flavour_id])
 
 
 def create_user(**params):
@@ -97,3 +102,15 @@ class PrivateFlavourAPITests(TestCase):
         self.assertEqual(response.data, serializer.data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_retrieve_flavour_details(self):
+        """Test retriving single flavour detail."""
+        flavour = create_flavour(user=self.user)
+
+        url = flavour_detail_url(flavour.id)
+        response = self.client.get(url)
+
+        serializer = FlavourDetailSerializer(flavour)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, serializer.data)
