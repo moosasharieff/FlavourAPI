@@ -64,7 +64,19 @@ class Flavour(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2)
     description = models.TextField(blank=True)
     link = models.CharField(max_length=255, blank=True)
+    tags = models.ManyToManyField("Tag")
 
     def __str__(self):
         """Returns strings representation of the class."""
         return self.title
+
+
+class Tag(models.Model):
+    """Create Tag DB Schema."""
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        """Returns string representation of Tag."""
+        return self.name

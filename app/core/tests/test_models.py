@@ -88,3 +88,11 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(flavour), flavour.title)
+
+    def test_create_tag_success(self):
+        """Test creating tag directly in DB."""
+        user = ModelTests.create_user()
+
+        tag = models.Tag.objects.create(user=user, name="TestTag1")
+
+        self.assertEqual(str(tag), tag.name)
