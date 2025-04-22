@@ -114,3 +114,21 @@ class PrivateFlavourAPITests(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, serializer.data)
+
+    def test_create_flavour_api(self):
+        """Test create Flavour from API."""
+        payload = {
+            "title": "Sample Flavour",
+            "time_minutes": 35,
+            "price": Decimal("3.29"),
+        }
+
+        response = self.client.post(FLAVOUR_URL, payload)
+
+        flavour_data = Flavour.objects.get(id=response.data["id"])
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(flavour_data.user, self.user)
+
+        for key, value in payload.items():
+            self.assertEqual(getattr(flavour_data, key), value)
