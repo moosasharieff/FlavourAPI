@@ -28,3 +28,7 @@ class FlavourViewSet(viewsets.ModelViewSet):
         if self.action == "list":
             return FlavourSerializer
         return FlavourDetailSerializer
+
+    def perform_create(self, serializer):
+        """Override default create method for creating Flavour through API."""
+        serializer.save(user=self.request.user)

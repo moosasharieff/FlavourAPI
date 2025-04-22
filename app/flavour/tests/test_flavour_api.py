@@ -114,3 +114,118 @@ class PrivateFlavourAPITests(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, serializer.data)
+
+    def test_create_flavour_api(self):
+        """Test create Flavour from API."""
+        payload = {
+            "title": "Sample Flavour",
+            "time_minutes": 35,
+            "price": Decimal("3.29"),
+        }
+
+        response = self.client.post(FLAVOUR_URL, payload)
+
+        flavour_data = Flavour.objects.get(id=response.data["id"])
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(flavour_data.user, self.user)
+
+        for key, value in payload.items():
+            self.assertEqual(getattr(flavour_data, key), value)
+
+    def test_partial_update(self):
+        """Test updating the fields of a Flavour partially."""
+        flavour = create_flavour(user=self.user)
+
+        payload = {
+            "title": "Updated tile of Flavour",
+            "time_minutes": 30,
+        }
+
+        url = flavour_detail_url(flavour.id)
+        response = self.client.patch(url, payload)
+
+        flavour.refresh_from_db()
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(flavour.title, payload["title"])
+        self.assertEqual(flavour.time_minutes, payload["time_minutes"])
+        self.assertEqual(flavour.user, self.user)
+
+    def test_full_update(self):
+        """Test updating all the fields of an existing flavour."""
+        flavour = create_flavour(user=self.user)
+
+        payload = {
+            "title": "New Sample Title Name",
+            "time_minutes": 30,
+            "price": Decimal("12.5"),
+            "description": "This is a new sample description.",
+            "link": "https://new_example.com",
+        }
+
+        url = flavour_detail_url(flavour.id)
+        response = self.client.put(url, payload)
+
+        flavour.refresh_from_db()
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(flavour.user, self.user)
+        for key, value in payload.items():
+            self.assertEqual(getattr(flavour, key), value)
+
+    def test_assigning_new_flavour_user_fails(self):
+        """Test assigning new owner for an existing flavour fails."""
+        creds = {
+            "email": "otherTester@gmail.com",
+            "password": "OtherPassword@123",
+            "name": "OtherUser",
+        }
+
+        other_user = create_user(**creds)
+        other_client = APIClient()
+        other_client.force_authenticate(other_user)
+
+        flavour = create_flavour(user=self.user)
+
+        payload = {"user": other_user.id}
+
+        url = flavour_detail_url(flavour.id)
+        response = other_client.patch(url, payload)
+
+        flavour.refresh_from_db()
+
+        self.assertEqual(flavour.user, self.user)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_delete_flavour(self):
+        """Test successfully deleting a flavour."""
+        flavour = create_flavour(user=self.user)
+
+        url = flavour_detail_url(flavour.id)
+        response = self.client.delete(url)
+
+        is_flavour_present = Flavour.objects.filter(id=flavour.id).exists()
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(is_flavour_present)
+
+    def test_delete_other_user_flavour_failure(self):
+        """Test deleting other user's recipe and failure to do so."""
+        flavour = create_flavour(user=self.user)
+
+        creds = {
+            "email": "otherTester@gmail.com",
+            "password": "TestPassword",
+        }
+        other_user = create_user(**creds)
+        other_client = APIClient()
+        other_client.force_authenticate(other_user)
+
+        url = flavour_detail_url(flavour.id)
+        response = other_client.delete(url)
+
+        is_flavour_present = Flavour.objects.filter(id=flavour.id).exists()
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertTrue(is_flavour_present)
