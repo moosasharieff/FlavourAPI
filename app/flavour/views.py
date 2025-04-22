@@ -31,4 +31,4 @@ class FlavourViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Override default create method for creating Flavour through API."""
-        serializer.save(user = self.request.user)
+        serializer.save(user=self.request.user)
